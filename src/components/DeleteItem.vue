@@ -1,17 +1,22 @@
 <template>
   <div>
-    <div v-for="(item, index) in list" :key="index">
-      <v-touch v-on:swipeleft="onSwipeLeft(item)" class="item">
-        <span>{{ item.name }}</span>
-        <span>{{ item.description }}</span>
-      </v-touch>
+    <div v-for="item in list" :key="item.id">
+      <div class="list">
+        <button class="button" data-type="danger" v-on:click="onSwipeLeft(item)">
+          删除
+        </button>
+        <div class="content">
+          <span>{{ item.name }}</span>
+          <span>{{ item.description }}</span>
+        </div>
+
+        <s class="space"></s>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   name: "DeleteItem",
   data() {
@@ -26,44 +31,55 @@ export default {
 
   methods: {
     onSwipeLeft(item) {
-      // 删除接口URL
-      const url = "http://192.168.3.54:8089/api/test/Delete/" + item.id;
-
-      // 配置
-      const config = {
-        method: "delete",
-        url,
-      };
-
-      // 向后端发请求
-      axios(config)
-        .then((response) => {
-          // 查看后端返回结果
-          console.log(JSON.stringify(response.data));
-
-          // 前端删除
-          const res = this.list.filter((list_item) => {
-            return list_item.id !== item.id;
-          });
-          this.list = res;
-        })
-        .catch((error) => {
-          // 出错查看错误
-          console.log(error);
-        });
+      // 前端删除
+      const res = this.list.filter((list_item) => {
+        return list_item.id !== item.id;
+      });
+      this.list = res;
     },
   },
 };
 </script>
 
 <style>
-span {
-  margin: 10px;
+.list::-webkit-scrollbar {
+  display: none;
 }
 
-.item {
-  padding: 0 auto;
-  margin-bottom: 10px;
-  border: 1px solid black;
+.list {
+  display: flex;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  overflow-y: scroll;
+}
+.content {
+  padding: 0.5rem 1rem;
+  line-height: 1.5;
+  flex: 0 0 calc(100vw - 2rem);
+  font-size: 1rem;
+  color: inherit;
+  background-color: #fff;
+  box-shadow: 0 1px #fff, 0 -1px #fff;
+  position: relative;
+}
+.space {
+  flex: 0 0 4rem;
+}
+.button {
+  border: 0;
+  padding: 0;
+  font-size: 1rem;
+  color: #fff;
+  width: 4rem;
+  height: 2.5rem;
+  position: absolute;
+  right: 0;
+  outline: 0;
+}
+[data-type="danger"] {
+  background-color: #eb4646;
+}
+[data-type="warning"] {
+  background-color: #f59b00;
 }
 </style>
