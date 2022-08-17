@@ -1,21 +1,30 @@
 <template>
-  <div class="about">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Panel title</h3>
-      </div>
-      <div class="panel-body">Panel content</div>
+  <div class="card">
+    <h5 class="card-header">{{ title }}</h5>
+    <div class="card-body">
+      <p class="card-text">
+        {{ content }}
+      </p>
     </div>
   </div>
 </template>
 
 <script>
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
+
 export default {
   data() {
     return {
-      title: "about",
-      content: "This is an about page",
+      title: "",
+      content: "",
     };
   },
+  mounted() {
+    this.title = this.$route.query.name ?? "about";
+    this.content = this.$route.query.description ?? "this is default value";
+  },
+
+  methods: {},
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="item in list" :key="item.id">
-      <div class="list">
+      <div class="list" @click="gotoAbout(item)">
         <button class="button" data-type="danger" v-on:click="onSwipeLeft(item)">
           删除
         </button>
@@ -36,6 +36,17 @@ export default {
         return list_item.id !== item.id;
       });
       this.list = res;
+    },
+
+    gotoAbout(item) {
+      this.$router.push({
+        path: "/about",
+        query: {
+          id: item.id,
+          name: item.name,
+          description: item.description,
+        },
+      });
     },
   },
 };
